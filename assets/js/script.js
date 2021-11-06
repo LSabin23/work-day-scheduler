@@ -5,6 +5,7 @@ var currentDay = $('#currentDay')
 
 var hourlyBlocks = [9, 10, 11, 12, 1, 2, 3, 4, 5]
 var timeLabel = ''
+var timeIdCounter = 9
 
 // CREATE TIME BLOCKS
 for (var i = 0; i < hourlyBlocks.length; i++) {
@@ -20,6 +21,7 @@ for (var i = 0; i < hourlyBlocks.length; i++) {
     .addClass('hour col-1')
     .text(hourlyBlocks[i] + timeLabel)
     .attr('data-', hourlyBlocks[i])
+    .attr('id', timeIdCounter)
 
   var descriptionEl = $('<textarea>')
     .addClass('description col-8')
@@ -35,6 +37,8 @@ for (var i = 0; i < hourlyBlocks.length; i++) {
   timeBlockEl.append(descriptionEl)
   timeBlockEl.append(saveBtnEl)
   containerEl.append(timeBlockEl)
+
+  timeIdCounter++
 }
 
 // FXN TO SAVE DESCRIPTION CONTENTS TO LOCAL STORAGE FOR THE HOUR BLOCK IT'S ATTACHED TO
@@ -56,13 +60,20 @@ for (var i = 0; i < hourlyBlocks.length; i++) {
 
 // FXN TO COMPARE TIME BLOCK WITH CURRENT HOUR OF DAY AND ADJUST BACKGROUND COLOR FOR CURRENT, PAST, AND FUTURE
 var checkCurrentHour = function () {
-  // set up var for hour set to element with class hour value
   for (var i = 0; i < hourlyBlocks.length; i++) {
-    var hour = hourlyBlocks[i].valueOf()
+    var hour = hourOfDayEl.attr('id')
     if (hour < moment().hour()) {
-      console.log('past')
-      console.log((moment().hour()))
-      descriptionEl.addClass('past')
+      $('textarea' + hourOfDayEl.attr('id')).removeClass('present')
+      $('textarea' + hourOfDayEl.attr('id')).removeClass('future')
+      $('textarea' + hourOfDayEl.attr('id')).addClass('past')
+    } else if (hour == moment().hour()) {
+      $('textarea' + hourOfDayEl.attr('id')).removeClass('past')
+      $('textarea' + hourOfDayEl.attr('id')).removeClass('future')
+      $('textarea' + hourOfDayEl.attr('id')).addClass('present')
+    } else if (hour > moment().hour()) {
+      $('textarea' + hourOfDayEl.attr('id')).removeClass('present')
+      $('textarea' + hourOfDayEl.attr('id')).removeClass('past')
+      $('textarea' + hourOfDayEl.attr('id')).addClass('future')
     }
   }
 }
