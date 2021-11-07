@@ -3,30 +3,72 @@ var containerEl = $('#container')
 var currentDay = $('#currentDay')
   .text(moment().format('dddd' + ', ' + 'MMMM Do'))
 
-var hourlyBlocks = [9, 10, 11, 12, 1, 2, 3, 4, 5]
-var timeLabel = ''
-var timeIdCounter = 9
-// var timeBlockEl = $('section')
+var hourlyBlocks = [
+  {
+    hourLabel: '9am',
+    hourId: 9,
+    hourDesc: ''
+  },
+  {
+    hourLabel: '10am',
+    hourId: 10,
+    hourDesc: ''
+  },
+  {
+    hourLabel: '11am',
+    hourId: 11,
+    hourDesc: ''
+  },
+  {
+    hourLabel: '12pm',
+    hourId: 12,
+    hourDesc: ''
+  },
+  {
+    hourLabel: '1pm',
+    hourId: 13,
+    hourDesc: ''
+  },
+  {
+    hourLabel: '2pm',
+    hourId: 14,
+    hourDesc: ''
+  },
+  {
+    hourLabel: '3pm',
+    hourId: 15,
+    hourDesc: ''
+  },
+  {
+    hourLabel: '4pm',
+    hourId: 16,
+    hourDesc: ''
+  },
+  {
+    hourLabel: '5pm',
+    hourId: 17,
+    hourDesc: ''
+  }
+]
+
+// var timeIdCounter = 9
 
 // CREATE TIME BLOCKS
 for (var i = 0; i < hourlyBlocks.length; i++) {
   var timeBlockEl = $('<section>')
     .addClass('row time-block')
-    .attr('data-hour', hourlyBlocks[i])
-    .attr('id', timeIdCounter)
+    // .attr('data-hour', hourlyBlocks[i])
+    // .attr('id', timeIdCounter)
 
-  if (hourlyBlocks[i] === 9 || hourlyBlocks[i] === 10 || hourlyBlocks[i] === 11) {
-    timeLabel = 'am'
-  } else {
-    timeLabel = 'pm'
-  }
   var hourOfDayEl = $('<div>')
     .addClass('hour col-1')
-    .text(hourlyBlocks[i] + timeLabel)
+    .text(hourlyBlocks[i].hourLabel)
+    .attr('id', hourlyBlocks[i].hourId)
 
   var descriptionEl = $('<textarea>')
     .addClass('description col-8')
     .attr('placeholder', 'add a task, appointment, or reminder')
+    .attr('id', hourlyBlocks[i].hourId)
 
   var saveBtnEl = $('<div>')
     .addClass('saveBtn fas fa-save col-1')
@@ -37,7 +79,7 @@ for (var i = 0; i < hourlyBlocks.length; i++) {
   timeBlockEl.append(saveBtnEl)
   containerEl.append(timeBlockEl)
 
-  timeIdCounter++
+  // timeIdCounter++
 }
 
 // FXN TO SAVE DESCRIPTION CONTENTS TO LOCAL STORAGE FOR THE HOUR BLOCK IT'S ATTACHED TO
@@ -59,23 +101,25 @@ for (var i = 0; i < hourlyBlocks.length; i++) {
 
 // FXN TO COMPARE TIME BLOCK WITH CURRENT HOUR OF DAY AND ADJUST BACKGROUND COLOR FOR CURRENT, PAST, AND FUTURE
 var checkCurrentHour = function () {
-  // select description for each time block
-  $(timeBlockEl.attr('id').children('.hour')).each(function () {
-    console.log($(this))
-    // use variable set to hour block Moment.js hour value to compare with current hour
-    var hour = hourOfDayEl.attr('id')
+  // select hourId for each time block
+  $('.hour').each(function () {
+    console.log($(this).attr('id'))
+    var hour = $(this).attr('id')
     if (hour < moment().hour()) {
-      $('textarea' + hourOfDayEl.attr('id')).removeClass('present')
-      $('textarea' + hourOfDayEl.attr('id')).removeClass('future')
-      $('textarea' + hourOfDayEl.attr('id')).addClass('past')
+      console.log('past')
+      $('textarea[id=' + hour + ']')
+        .removeClass('present future')
+        .addClass('past')
     } else if (hour == moment().hour()) {
-      $('textarea' + hourOfDayEl.attr('id')).removeClass('past')
-      $('textarea' + hourOfDayEl.attr('id')).removeClass('future')
-      $('textarea' + hourOfDayEl.attr('id')).addClass('present')
+      console.log('now')
+      $('textarea[id=' + hour + ']')
+        .removeClass('past future')
+        .addClass('present')
     } else if (hour > moment().hour()) {
-      $('textarea' + hourOfDayEl.attr('id')).removeClass('present')
-      $('textarea' + hourOfDayEl.attr('id')).removeClass('past')
-      $('textarea' + hourOfDayEl.attr('id')).addClass('future')
+      console.log('future')
+      $('textarea[id=' + hour + ']')
+        .removeClass('present past')
+        .addClass('future')
     }
   })
 }
