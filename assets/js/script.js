@@ -6,11 +6,14 @@ var currentDay = $('#currentDay')
 var hourlyBlocks = [9, 10, 11, 12, 1, 2, 3, 4, 5]
 var timeLabel = ''
 var timeIdCounter = 9
+var timeBlockEl = $('<section>')
 
 // CREATE TIME BLOCKS
 for (var i = 0; i < hourlyBlocks.length; i++) {
-  var timeBlockEl = $('<section>')
+  timeBlockEl = $('section')
     .addClass('row time-block')
+    .attr('data-hour', hourlyBlocks[i])
+    .attr('id', timeIdCounter)
 
   if (hourlyBlocks[i] === 9 || hourlyBlocks[i] === 10 || hourlyBlocks[i] === 11) {
     timeLabel = 'am'
@@ -20,17 +23,13 @@ for (var i = 0; i < hourlyBlocks.length; i++) {
   var hourOfDayEl = $('<div>')
     .addClass('hour col-1')
     .text(hourlyBlocks[i] + timeLabel)
-    .attr('data-', hourlyBlocks[i])
-    .attr('id', timeIdCounter)
 
   var descriptionEl = $('<textarea>')
     .addClass('description col-8')
     .attr('placeholder', 'add a task, appointment, or reminder')
-    .attr('data-', hourlyBlocks[i])
 
   var saveBtnEl = $('<div>')
     .addClass('saveBtn fas fa-save col-1')
-    .attr('data-', hourlyBlocks[i])
     .attr('id', 'saveBtn')
 
   timeBlockEl.append(hourOfDayEl)
@@ -60,7 +59,10 @@ for (var i = 0; i < hourlyBlocks.length; i++) {
 
 // FXN TO COMPARE TIME BLOCK WITH CURRENT HOUR OF DAY AND ADJUST BACKGROUND COLOR FOR CURRENT, PAST, AND FUTURE
 var checkCurrentHour = function () {
-  for (var i = 0; i < hourlyBlocks.length; i++) {
+  // select description for each time block
+  $(timeBlockEl.attr('id').children('hour')).each(function () {
+    console.log($(this))
+    // use variable set to hour block Moment.js hour value to compare with current hour
     var hour = hourOfDayEl.attr('id')
     if (hour < moment().hour()) {
       $('textarea' + hourOfDayEl.attr('id')).removeClass('present')
@@ -75,7 +77,7 @@ var checkCurrentHour = function () {
       $('textarea' + hourOfDayEl.attr('id')).removeClass('past')
       $('textarea' + hourOfDayEl.attr('id')).addClass('future')
     }
-  }
+  })
 }
 
 checkCurrentHour()
