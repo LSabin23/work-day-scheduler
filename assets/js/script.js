@@ -6,11 +6,12 @@ var currentDay = $('#currentDay')
 var hourlyBlocks = [9, 10, 11, 12, 1, 2, 3, 4, 5]
 var timeLabel = ''
 var timeIdCounter = 9
-var timeBlockEl = $('<section>').addClass('row time-block')
+// var timeBlockEl = $('section')
 
 // CREATE TIME BLOCKS
 for (var i = 0; i < hourlyBlocks.length; i++) {
-  timeBlockEl
+  var timeBlockEl = $('<section>')
+    .addClass('row time-block')
     .attr('data-hour', hourlyBlocks[i])
     .attr('id', timeIdCounter)
 
@@ -59,7 +60,7 @@ for (var i = 0; i < hourlyBlocks.length; i++) {
 // FXN TO COMPARE TIME BLOCK WITH CURRENT HOUR OF DAY AND ADJUST BACKGROUND COLOR FOR CURRENT, PAST, AND FUTURE
 var checkCurrentHour = function () {
   // select description for each time block
-  $(timeBlockEl.attr('id').children('hour')).each(function () {
+  $(timeBlockEl.attr('id').children('.hour')).each(function () {
     console.log($(this))
     // use variable set to hour block Moment.js hour value to compare with current hour
     var hour = hourOfDayEl.attr('id')
