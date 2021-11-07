@@ -6,12 +6,11 @@ var currentDay = $('#currentDay')
 var hourlyBlocks = [9, 10, 11, 12, 1, 2, 3, 4, 5]
 var timeLabel = ''
 var timeIdCounter = 9
-var timeBlockEl = $('<section>')
+var timeBlockEl = $('<section>').addClass('row time-block')
 
 // CREATE TIME BLOCKS
 for (var i = 0; i < hourlyBlocks.length; i++) {
-  timeBlockEl = $('section')
-    .addClass('row time-block')
+  timeBlockEl
     .attr('data-hour', hourlyBlocks[i])
     .attr('id', timeIdCounter)
 
