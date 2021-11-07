@@ -51,8 +51,6 @@ var hourlyBlocks = [
   }
 ]
 
-// var timeIdCounter = 9
-
 // CREATE TIME BLOCKS
 for (var i = 0; i < hourlyBlocks.length; i++) {
   var timeBlockEl = $('<section>')
@@ -68,34 +66,36 @@ for (var i = 0; i < hourlyBlocks.length; i++) {
   var descriptionEl = $('<textarea>')
     .addClass('description col-8')
     .attr('placeholder', 'add a task, appointment, or reminder')
-    .attr('id', hourlyBlocks[i].hourId)
+    .attr('data-descId', hourlyBlocks[i].hourId)
 
   var saveBtnEl = $('<div>')
     .addClass('saveBtn fas fa-save col-1')
     .attr('id', 'saveBtn')
+    .attr('data-saveBtnId', hourlyBlocks[i].hourId)
 
   timeBlockEl.append(hourOfDayEl)
   timeBlockEl.append(descriptionEl)
   timeBlockEl.append(saveBtnEl)
   containerEl.append(timeBlockEl)
-
-  // timeIdCounter++
 }
 
 // FXN TO SAVE DESCRIPTION CONTENTS TO LOCAL STORAGE FOR THE HOUR BLOCK IT'S ATTACHED TO
-// var saveTimeBlockInfo = function () {
+var saveTimeBlockInfo = function (id) {
   // identify the description in the same row as the button that was clicked
+  console.log($('textarea[data-descId=' + id + ']'))
   // get the content of the description
   // identify the hour block the save button and description are tied to (same row)
   // get the content of the hour block OR the index number content?
   // tie the description and hour block together
   // send to local storage
-// }
+}
 
 // EVENT HANDLER FOR SAVE BTN CLICK
-// $('#saveBtn').on('click', function ()) {
-//   saveTimeBlockInfo()
-// }
+$('.saveBtn').on('click', function () {
+  var saveBtnId = $(this).attr('data-saveBtnId')
+  // return saveBtnId
+  saveTimeBlockInfo(saveBtnId)
+})
 
 // LOAD DESCRIPTION CONTENTS TO CORRECT HOUR BLOCKS
 
@@ -103,21 +103,18 @@ for (var i = 0; i < hourlyBlocks.length; i++) {
 var checkCurrentHour = function () {
   // select hourId for each time block
   $('.hour').each(function () {
-    console.log($(this).attr('id'))
+    // console.log($(this).attr('id'))
     var hour = $(this).attr('id')
     if (hour < moment().hour()) {
-      console.log('past')
-      $('textarea[id=' + hour + ']')
+      $('textarea[data-descId=' + hour + ']')
         .removeClass('present future')
         .addClass('past')
     } else if (hour == moment().hour()) {
-      console.log('now')
-      $('textarea[id=' + hour + ']')
+      $('textarea[data-descId=' + hour + ']')
         .removeClass('past future')
         .addClass('present')
     } else if (hour > moment().hour()) {
-      console.log('future')
-      $('textarea[id=' + hour + ']')
+      $('textarea[data-descId=' + hour + ']')
         .removeClass('present past')
         .addClass('future')
     }
