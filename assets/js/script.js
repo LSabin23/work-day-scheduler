@@ -51,12 +51,25 @@ var hourlyBlocks = [
   }
 ]
 
+// // LOAD DESCRIPTION CONTENTS TO CORRECT HOUR BLOCKS
+// var loadSavedItems = function () {
+
+//   var savedBlocks = localStorage.getItem('savedBlocks')
+
+//   if (!savedBlocks) {
+//     savedBlocks = []
+//   } else {
+//     savedBlocks = JSON.parse(localStorage.getItem('savedBlocks'))
+//   }
+//   console.log(savedBlocks)
+//   // hourlyBlocks = savedBlocks
+//   // return savedBlocks
+// }
+
 // CREATE TIME BLOCKS
 for (var i = 0; i < hourlyBlocks.length; i++) {
   var timeBlockEl = $('<section>')
     .addClass('row time-block')
-    // .attr('data-hour', hourlyBlocks[i])
-    // .attr('id', timeIdCounter)
 
   var hourOfDayEl = $('<div>')
     .addClass('hour col-1')
@@ -97,16 +110,6 @@ $('.saveBtn').on('click', function () {
   saveTimeBlockInfo(saveBtnId)
 })
 
-// LOAD DESCRIPTION CONTENTS TO CORRECT HOUR BLOCKS
-var loadSavedItems = function () {
-
-  if (!savedBlocks) {
-    var savedBlocks = []
-  }
-
-  savedBlocks = JSON.parse(localStorage.getItem('savedBlocks'))
-}
-
 // FXN TO COMPARE TIME BLOCK WITH CURRENT HOUR OF DAY AND ADJUST BACKGROUND COLOR FOR CURRENT, PAST, AND FUTURE
 var checkCurrentHour = function () {
   // select hourId for each time block
@@ -130,4 +133,4 @@ var checkCurrentHour = function () {
 }
 
 checkCurrentHour()
-loadSavedItems()
+// loadSavedItems()
