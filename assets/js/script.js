@@ -81,23 +81,34 @@ for (var i = 0; i < hourlyBlocks.length; i++) {
 
 // FXN TO SAVE DESCRIPTION CONTENTS TO LOCAL STORAGE FOR THE HOUR BLOCK IT'S ATTACHED TO
 var saveTimeBlockInfo = function (id) {
-  // identify the description in the same row as the button that was clicked
-  console.log($('textarea[data-descId=' + id + ']'))
+  // get array object by hourId that matches fxn id
+  var hourObj = hourlyBlocks.find(this.hourId, id)
+  console.log(hourObj)
   // get the content of the description
-  // identify the hour block the save button and description are tied to (same row)
-  // get the content of the hour block OR the index number content?
-  // tie the description and hour block together
+  console.log($('textarea[data-descId=' + id + ']').val())
+  // get the content of the hour block
+  console.log($('div[id=' + id + ']').text())
+  // update the properties of the correct time block in the hourlyBlocks array
   // send to local storage
+  // var hourContent =
+  // localStorage.setItem('savedBlocks', JSON.stringify(hourContent))
 }
 
 // EVENT HANDLER FOR SAVE BTN CLICK
 $('.saveBtn').on('click', function () {
   var saveBtnId = $(this).attr('data-saveBtnId')
-  // return saveBtnId
   saveTimeBlockInfo(saveBtnId)
 })
 
 // LOAD DESCRIPTION CONTENTS TO CORRECT HOUR BLOCKS
+// var loadSavedItems = function () {
+
+//   if (!savedBlocks) {
+//     var savedBlocks= []
+//   }
+
+//   savedBlocks = JSON.parse(localStorage.getItem('savedBlocks'))
+// }
 
 // FXN TO COMPARE TIME BLOCK WITH CURRENT HOUR OF DAY AND ADJUST BACKGROUND COLOR FOR CURRENT, PAST, AND FUTURE
 var checkCurrentHour = function () {
