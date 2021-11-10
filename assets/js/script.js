@@ -52,25 +52,26 @@ var hourlyBlocks = [
 ]
 
 // CREATE TIME BLOCKS
-var createTimeBlocks = function (hourlyBlocks) {
-  for (var i = 0; i < hourlyBlocks.length; i++) {
+var createTimeBlocks = function (param) {
+  for (var i = 0; i < param.length; i++) {
     var timeBlockEl = $('<section>')
       .addClass('row time-block')
 
     var hourOfDayEl = $('<div>')
       .addClass('hour col-1')
-      .text(hourlyBlocks[i].hourLabel)
-      .attr('id', hourlyBlocks[i].hourId)
+      .text(param[i].hourLabel)
+      .attr('id', param[i].hourId)
 
     var descriptionEl = $('<textarea>')
       .addClass('description col-8')
       .attr('placeholder', 'add a task, appointment, or reminder')
-      .attr('data-descId', hourlyBlocks[i].hourId)
+      .attr('data-descId', param[i].hourId)
+      .val(param[i].hourDesc)
 
     var saveBtnEl = $('<div>')
       .addClass('saveBtn fas fa-save col-1')
       .attr('id', 'saveBtn')
-      .attr('data-saveBtnId', hourlyBlocks[i].hourId)
+      .attr('data-saveBtnId', param[i].hourId)
 
     timeBlockEl.append(hourOfDayEl)
     timeBlockEl.append(descriptionEl)
@@ -84,17 +85,13 @@ var loadSavedItems = function () {
   var savedBlocks = JSON.parse(localStorage.getItem('savedBlocks'))
 
   if (!savedBlocks) {
-    // savedBlocks = []
-    // createTimeBlocks(hourlyBlocks)
-    console.log('No tasks found.')
+    createTimeBlocks(hourlyBlocks)
+    // console.log('No tasks found.')
   } else {
-    // savedBlocks = JSON.parse(localStorage.getItem('savedBlocks'))
     createTimeBlocks(savedBlocks)
-    console.log('Tasks found, but ignored.')
-    console.log(savedBlocks)
+    // console.log('Tasks found.')
+    // console.log(savedBlocks)
   }
-  // hourlyBlocks = savedBlocks
-  // return savedBlocks
 }
 
 // FXN TO SAVE DESCRIPTION CONTENTS TO LOCAL STORAGE FOR THE HOUR BLOCK IT'S ATTACHED TO
