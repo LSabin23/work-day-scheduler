@@ -51,45 +51,50 @@ var hourlyBlocks = [
   }
 ]
 
-// // LOAD DESCRIPTION CONTENTS TO CORRECT HOUR BLOCKS
-// var loadSavedItems = function () {
-
-//   var savedBlocks = localStorage.getItem('savedBlocks')
-
-//   if (!savedBlocks) {
-//     savedBlocks = []
-//   } else {
-//     savedBlocks = JSON.parse(localStorage.getItem('savedBlocks'))
-//   }
-//   console.log(savedBlocks)
-//   // hourlyBlocks = savedBlocks
-//   // return savedBlocks
-// }
-
 // CREATE TIME BLOCKS
-for (var i = 0; i < hourlyBlocks.length; i++) {
-  var timeBlockEl = $('<section>')
-    .addClass('row time-block')
+var createTimeBlocks = function (hourlyBlocks) {
+  for (var i = 0; i < hourlyBlocks.length; i++) {
+    var timeBlockEl = $('<section>')
+      .addClass('row time-block')
 
-  var hourOfDayEl = $('<div>')
-    .addClass('hour col-1')
-    .text(hourlyBlocks[i].hourLabel)
-    .attr('id', hourlyBlocks[i].hourId)
+    var hourOfDayEl = $('<div>')
+      .addClass('hour col-1')
+      .text(hourlyBlocks[i].hourLabel)
+      .attr('id', hourlyBlocks[i].hourId)
 
-  var descriptionEl = $('<textarea>')
-    .addClass('description col-8')
-    .attr('placeholder', 'add a task, appointment, or reminder')
-    .attr('data-descId', hourlyBlocks[i].hourId)
+    var descriptionEl = $('<textarea>')
+      .addClass('description col-8')
+      .attr('placeholder', 'add a task, appointment, or reminder')
+      .attr('data-descId', hourlyBlocks[i].hourId)
 
-  var saveBtnEl = $('<div>')
-    .addClass('saveBtn fas fa-save col-1')
-    .attr('id', 'saveBtn')
-    .attr('data-saveBtnId', hourlyBlocks[i].hourId)
+    var saveBtnEl = $('<div>')
+      .addClass('saveBtn fas fa-save col-1')
+      .attr('id', 'saveBtn')
+      .attr('data-saveBtnId', hourlyBlocks[i].hourId)
 
-  timeBlockEl.append(hourOfDayEl)
-  timeBlockEl.append(descriptionEl)
-  timeBlockEl.append(saveBtnEl)
-  containerEl.append(timeBlockEl)
+    timeBlockEl.append(hourOfDayEl)
+    timeBlockEl.append(descriptionEl)
+    timeBlockEl.append(saveBtnEl)
+    containerEl.append(timeBlockEl)
+  }
+}
+
+// // LOAD DESCRIPTION CONTENTS TO CORRECT HOUR BLOCKS
+var loadSavedItems = function () {
+  var savedBlocks = JSON.parse(localStorage.getItem('savedBlocks'))
+
+  if (!savedBlocks) {
+    // savedBlocks = []
+    // createTimeBlocks(hourlyBlocks)
+    console.log('No tasks found.')
+  } else {
+    // savedBlocks = JSON.parse(localStorage.getItem('savedBlocks'))
+    createTimeBlocks(savedBlocks)
+    console.log('Tasks found, but ignored.')
+    console.log(savedBlocks)
+  }
+  // hourlyBlocks = savedBlocks
+  // return savedBlocks
 }
 
 // FXN TO SAVE DESCRIPTION CONTENTS TO LOCAL STORAGE FOR THE HOUR BLOCK IT'S ATTACHED TO
@@ -103,12 +108,6 @@ var saveTimeBlockInfo = function (id) {
   var hourContent = hourlyBlocks
   localStorage.setItem('savedBlocks', JSON.stringify(hourContent))
 }
-
-// EVENT HANDLER FOR SAVE BTN CLICK
-$('.saveBtn').on('click', function () {
-  var saveBtnId = $(this).attr('data-saveBtnId')
-  saveTimeBlockInfo(saveBtnId)
-})
 
 // FXN TO COMPARE TIME BLOCK WITH CURRENT HOUR OF DAY AND ADJUST BACKGROUND COLOR FOR CURRENT, PAST, AND FUTURE
 var checkCurrentHour = function () {
@@ -132,5 +131,12 @@ var checkCurrentHour = function () {
   })
 }
 
+loadSavedItems()
 checkCurrentHour()
-// loadSavedItems()
+
+// EVENT HANDLER FOR SAVE BTN CLICK
+$('.saveBtn').on('click', function () {
+  console.log('Save button was clicked.')
+  var saveBtnId = $(this).attr('data-saveBtnId')
+  saveTimeBlockInfo(saveBtnId)
+})
